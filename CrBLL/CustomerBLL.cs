@@ -19,6 +19,12 @@ namespace CrBLL
             return context.Customers.Where(c => (c.CompanyName + "").Contains(name));            
         }
 
+        public IEnumerable<ICustomer> Find(string id)
+        {
+            var context = new DbContextFactory().GetDbContext();
+            return context.Customers.Where(c => (c.Id == id));
+        }
+
         public void Insert(Customer customer)
         {
             var context = new DbContextFactory().GetDbContext();
@@ -31,6 +37,12 @@ namespace CrBLL
             var context = new DbContextFactory().GetDbContext();
             context.Delete(customer);
         }
+        public void Update(Customer customer)
+        {
+            var context = new DbContextFactory().GetDbContext();
+            context.Update(customer);
+        }
+
 
     }
 }

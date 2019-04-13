@@ -55,14 +55,19 @@ namespace MongoDbAccess
         public void Update<T>(T item)
         {
             var collection = database.GetCollection<T>(item.GetType().Name);
-            collection.ReplaceOneAsync(a => (a as IMongoModel).Id == ((IMongoModel)item).Id, item);
+            var id = ((IMongoModel)item).Id;
+            var rr = collection.ReplaceOneAsync(Builders<T>.Filter.Eq("Id", id), item);
+
+            var s = rr.Status;
         }
 
         public void Delete<T>(T item)
         {
-            var collection = database.GetCollection<IMongoModel>(item.GetType().Name);
-            var query = Builders<IMongoModel>.Filter.Where(r => r.Id == ((IMongoModel)item).Id);
-            var rr = collection.DeleteOneAsync(query);
+            var collection = database.GetCollection<T>(item.GetType().Name);
+            var id = ((IMongoModel)item).Id;
+
+            var rr = collection.DeleteOneAsync(Builders<T>.Filter.Eq("Id", id));
+
             var s = rr.Status;
         }
 
