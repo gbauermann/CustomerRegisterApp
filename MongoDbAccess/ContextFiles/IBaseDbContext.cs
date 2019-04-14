@@ -1,5 +1,4 @@
 ﻿using Models;
-using System;
 using System.Collections.Generic;
 
 namespace MongoDbAccess
@@ -14,7 +13,6 @@ namespace MongoDbAccess
 
         void Insert<T>(T item);
         void Update<T>(T item);
-        void Delete<T>(T item);
-        void DeleteMany<T>(List<T> list);
+        void Delete<T>(T item);        
     }
 }

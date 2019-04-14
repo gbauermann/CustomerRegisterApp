@@ -83,8 +83,9 @@ namespace UTest
 
                 cls.Insert(customer);
 
+                cls.Delete("10");
                 mock.Mock<CustomerBLL>()
-                    .Verify(x => x.Insert(customer), Times.Exactly(1));
+                    .Verify(x => x.Delete("10"), Times.Exactly(1));
             }
         }
 

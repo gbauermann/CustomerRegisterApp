@@ -47,8 +47,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Customer.cs" />
-    <Compile Include="ICustomer.cs" />
+    <Compile Include="Customer\Customer.cs" />
+    <Compile Include="Customer\ICustomer.cs" />
     <Compile Include="IMongoModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

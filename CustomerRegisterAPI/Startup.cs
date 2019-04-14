@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDbAccess;
@@ -18,8 +17,7 @@ namespace CustomerRegisterAPI
         }
 
         public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
+       
         public void ConfigureServices(IServiceCollection services)
         {
             DbContextFactory.ConnectionString = Configuration.GetSection("DBConnection:ConnectionString").Value;
@@ -31,16 +29,15 @@ namespace CustomerRegisterAPI
                 options.AddPolicy(MyAllowSpecificOrigins,
                 builder =>
                 {
-                    builder.WithOrigins("https://localhost:4438", "null")
-                                        .AllowAnyHeader()
-                                        .AllowAnyMethod(); ;
+                    builder.AllowAnyOrigin()
+                            .AllowAnyHeader()
+                            .AllowAnyMethod(); 
                 });
             });
 
             services.AddMvc();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
@@ -53,7 +50,6 @@ namespace CustomerRegisterAPI
             }
 
             app.UseCors(MyAllowSpecificOrigins);
-
             app.UseHttpsRedirection();
             app.UseMvc();
         }

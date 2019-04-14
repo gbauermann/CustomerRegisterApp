@@ -1,12 +1,7 @@
 ﻿using Models;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
-using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MongoDbAccess
 {
@@ -18,6 +13,9 @@ namespace MongoDbAccess
 
         private IMongoDatabase database;
 
+        /// <summary>
+        /// Construtor interno para que a decisão do contexto fique por conta da factory class DbContextFactory
+        /// </summary>
         internal MongoDbContext()
         {
 
@@ -73,20 +71,6 @@ namespace MongoDbAccess
             var records = database.GetCollection<T>(collectionName);
             return records.Find(m => true).ToListAsync().Result;
         }
-
-        public void DeleteMany<T>(List<T> list)
-        {
-            var collection = database.GetCollection<T>(list.First().GetType().Name);
-
-            var filter = Builders<T>.Filter.Eq("Id", "-1");
-
-            foreach (var item in list)
-            {
-                var id = ((IMongoModel)item).Id;
-
-            }          
-
-            collection.DeleteManyAsync(filter);
-        }
+  
     }
 }

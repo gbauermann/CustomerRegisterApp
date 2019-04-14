@@ -60,9 +60,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DbContextFactory.cs" />
-    <Compile Include="IBaseDbContext.cs" />
-    <Compile Include="MongoDbContext.cs" />
+    <Compile Include="ContextFiles\DbContextFactory.cs" />
+    <Compile Include="ContextFiles\IBaseDbContext.cs" />
+    <Compile Include="ContextFiles\MongoDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -75,5 +75,6 @@
       <Name>Models</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

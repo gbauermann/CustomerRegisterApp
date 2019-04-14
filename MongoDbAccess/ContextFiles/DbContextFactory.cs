@@ -10,6 +10,8 @@ namespace MongoDbAccess
 
         public IBaseDbContext GetDbContext()
         {
+            //como só utilizamos mongoDb, retornamos o contexto do mongoDB
+            //mas poderia retornar outros
             return getMongoDbContext();
 
         }
