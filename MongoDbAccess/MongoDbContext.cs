@@ -56,9 +56,8 @@ namespace MongoDbAccess
         {
             var collection = database.GetCollection<T>(item.GetType().Name);
             var id = ((IMongoModel)item).Id;
-            var rr = collection.ReplaceOneAsync(Builders<T>.Filter.Eq("Id", id), item);
-
-            var s = rr.Status;
+            collection.ReplaceOneAsync(Builders<T>.Filter.Eq("Id", id), item);
+            
         }
 
         public void Delete<T>(T item)
@@ -66,9 +65,7 @@ namespace MongoDbAccess
             var collection = database.GetCollection<T>(item.GetType().Name);
             var id = ((IMongoModel)item).Id;
 
-            var rr = collection.DeleteOneAsync(Builders<T>.Filter.Eq("Id", id));
-
-            var s = rr.Status;
+            collection.DeleteOneAsync(Builders<T>.Filter.Eq("Id", id));
         }
 
         private ICollection<T> getRecords<T>(string collectionName)
@@ -77,5 +74,19 @@ namespace MongoDbAccess
             return records.Find(m => true).ToListAsync().Result;
         }
 
+        public void DeleteMany<T>(List<T> list)
+        {
+            var collection = database.GetCollection<T>(list.First().GetType().Name);
+
+            var filter = Builders<T>.Filter.Eq("Id", "-1");
+
+            foreach (var item in list)
+            {
+                var id = ((IMongoModel)item).Id;
+
+            }          
+
+            collection.DeleteManyAsync(filter);
+        }
     }
 }

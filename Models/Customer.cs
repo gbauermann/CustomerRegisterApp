@@ -10,13 +10,18 @@ namespace Models
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
         //Razão social
-        public string CompanyName { get; set; }
         [Required]
-        //Nome fantasia - só deixei este como obrigatório pq as vezes o usuário não tem todos os dados        
+        public string CompanyName { get; set; }
+        //Nome fantasia 
+        [Required]              
         public string TradingName { get; set; }
+        [Required]
         public string CNPJ { get; set; }
-        public string Email { get; set; }        
+        [Required]
+        public string Email { get; set; }
+        [Required]
         public string PhoneNumber { get; set; }
+        [Required]
         public string Address { get; set; }
 
         public Customer() { }

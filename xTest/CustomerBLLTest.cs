@@ -1,11 +1,8 @@
 ﻿using Autofac.Extras.Moq;
 using CrBLL;
 using Models;
-using MongoDbAccess;
 using Moq;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace UTest
@@ -17,22 +14,22 @@ namespace UTest
         {
             using (var mock = AutoMock.GetLoose())
             {
-                mock.Mock<MongoDbContext>()
-                    .Setup(x => x.Customers)
+                mock.Mock<CustomerBLL>()
+                    .Setup(x => x.GetAll())
                     .Returns(getSamplePeople);
 
                 var cls = mock.Create<CustomerBLL>();
 
                 var expected = getSamplePeople();
-                var actual = cls.GetAll();
+                var actual = cls.GetAll() as List<ICustomer>;
 
                 Assert.True(actual != null);
-                Assert.Equal(expected.Count, (actual as List<Customer>).Count);
+                Assert.Equal(expected.Count, actual?.Count);
 
-                for (int i = 0; i < expected.Count; i++)
+                for (int i = 0; i < expected.Count && i < actual?.Count; i++)
                 {
-                    Assert.Equal(expected[i].CompanyName, (actual as List<Customer>)[i].CompanyName);
-                    Assert.Equal(expected[i].TradingName, (actual as List<Customer>)[i].TradingName);
+                    Assert.Equal(expected[i].CompanyName, actual[i].CompanyName);
+                    Assert.Equal(expected[i].TradingName, actual[i].TradingName);
                 }
             }
         }
@@ -48,19 +45,52 @@ namespace UTest
                     TradingName = "Acme"
                 };
 
-                mock.Mock<MongoDbContext>()
+                mock.Mock<CustomerBLL>()
                     .Setup(x => x.Insert(customer));
 
                 var cls = mock.Create<CustomerBLL>();
                 cls.Insert(customer);
-                mock.Mock<MongoDbContext>()
+
+                mock.Mock<CustomerBLL>()
                     .Verify(x => x.Insert(customer), Times.Exactly(1));
             }
         }
 
-        private List<Customer> getSamplePeople()
+        [Fact]
+        public void Delete_Test()
         {
-            var output = new List<Customer>
+            using (var mock = AutoMock.GetLoose())
+            {
+                var customer = new Customer
+                {
+                    Id = "01",
+                    CompanyName = "Acme LTDA",
+                    TradingName = "Acme"
+                };
+
+                mock.Mock<CustomerBLL>()
+                    .Setup(x => x.Insert(customer));
+
+                var cls = mock.Create<CustomerBLL>();
+                cls.Insert(customer);
+
+                customer = new Customer
+                {
+                    Id = "10",
+                    CompanyName = "Acme LTDA",
+                    TradingName = "Acme"
+                };
+
+                cls.Insert(customer);
+
+                mock.Mock<CustomerBLL>()
+                    .Verify(x => x.Insert(customer), Times.Exactly(1));
+            }
+        }
+
+        private List<ICustomer> getSamplePeople()
+        {
+            var output = new List<ICustomer>
             {
                 new Customer
                 {
